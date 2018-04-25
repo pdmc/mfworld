@@ -1,25 +1,22 @@
 pragma solidity ^0.4.11;
 
-import './MirailaDataAccess.sol';
+import "./MirailaCoreBase.sol";
+// import "./MirailaDataAccess.sol";
 
-contract MirailaCoreBase is MirailaDataAccess {
+contract MirailaEnergyBase is MirailaCoreBase{
+    
+    uint256 public _allenergy = 0;
+    mapping (address => uint256) public balanceOf;
+    mapping (address => bool) accessAllowed;
 
-	/// @dev Emited when contract is upgraded - See README.md for updgrade plan
-	address public newContractAddress;
-	
-    event ContractUpgrade(address newContract);
-
-	mapping (address => bool) accessAllowed;
-
-	function MirailaCoreBase() public {
+    function MirailaEnergyBase() public {
         accessAllowed[msg.sender] = true;
     }
 
-    function upgrade(address _v2Address) external onlyAdmin {
-    	newContractAddress = _v2Address;
-    	ContractUpgrade(_v2Address);
-    }	
-
+    function setBlance(address _address, uint256 v) platform public {
+        balanceOf[_address] = v;
+    }
+    
     modifier platform() {
         require(accessAllowed[msg.sender] == true);
         _;
@@ -32,4 +29,17 @@ contract MirailaCoreBase is MirailaDataAccess {
     function denyAccess(address _addr) platform public {
         accessAllowed[_addr] = false;
     }
+    
+    function getAccess(address _addr) public returns (bool) {
+       return accessAllowed[_addr];
+    }
+    
+    function addEnergy(uint256 value) public returns (uint256) {
+       _allenergy += value;
+    }
+    
+    function getEnergy() public returns (uint256) {
+        return  _allenergy;
+    }
+  
 }
