@@ -10,14 +10,12 @@ contract MirailaDiamond {
     MirailaDiamondBase mirailaDiamondBase;
     MirailaCoreBase mirailaCoreBase;
     
-    
     function MirailaDiamond(address energy_add, address user_add, address diamond_add){
         mirailaEnergyBase = MirailaEnergyBase(energy_add);
         mirailaCoreBase = MirailaCoreBase(user_add);
         mirailaDiamondBase = MirailaDiamondBase(diamond_add);
     }
     
-  
     // get all user
     function lookUser() public returns (uint256) {
       return mirailaCoreBase.getUser();
@@ -39,12 +37,15 @@ contract MirailaDiamond {
     }
     
     // proess diamond 
-    function diamondAdd(address _address) public {
-      mirailaDiamondBase.setdiamond(_address, mirailaDiamondBase.diamondOf(_address) + 10);
+    function diamondAdd(address _address, uint256 diamondValue) public {
+      mirailaDiamondBase.setdiamond(_address, mirailaDiamondBase.diamondOf(_address) + diamondValue);
+      mirailaDiamondBase.countLeavediamond(diamondValue);
     }
     
-    
-    
-    
-    
+    // process user diamond
+    function userDiamond(address _useradd) public returns(uint256) {
+       uint256 userDiamond =  10**18*mirailaEnergyBase.balanceOf(_useradd)*mirailaCoreBase.getUser()/mirailaEnergyBase.getEnergy();
+       return userDiamond;
+    }
+
 }
