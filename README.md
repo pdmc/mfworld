@@ -1,2 +1,2 @@
 # MFWorld 
-The future world.
+a beautiful world.
