@@ -12,7 +12,8 @@ contract MirailaDiamondBase {
     uint256 private angelDiamond = 120000000*10**18;
     uint256 private mirailaDiamond = 120000000*10**18;
     
-    uint256 private currentDiamond;
+    uint256 private currentDiamond = 60000000*10**18;
+    uint256 private _leaveDiamond;
     uint256 private poolDiamond;
     uint256 private _start;
     uint256 private _mouth = 1;
@@ -31,13 +32,10 @@ contract MirailaDiamondBase {
         return allDiamond;
     }
     
+    
     function getLeavediamond() returns (uint256){
         return leaveDiamond;
     }
-    
-    // function countLeavediamond(uint256 value) returns (uint256) {
-    //     return leaveDiamond -= value;
-    // }
     
     function setdiamond(address _address, uint256 _value) public {
         if (now >= _start + 30 * 1 days && _mouth <=14) { 
@@ -56,6 +54,7 @@ contract MirailaDiamondBase {
         require(currentDiamond >= _value);
         diamondOf[_address] = _value;
         currentDiamond -= _value;
+        _leaveDiamond = currentDiamond;
     }
 
     
