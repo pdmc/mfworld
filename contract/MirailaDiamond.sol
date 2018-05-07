@@ -4,7 +4,7 @@ import './MirailaEnergyBase.sol';
 import './MirailaDiamondBase.sol';
 import './MirailaCoreBase.sol';
 
-contract MirailaDiamond {
+contract MirailaDiamond is MirailaDataAccess{
     
     MirailaEnergyBase mirailaEnergyBase;
     MirailaDiamondBase mirailaDiamondBase;
@@ -43,9 +43,9 @@ contract MirailaDiamond {
     // }
     
     // process user diamond
-    function userDiamond(address _useradd) public {
+    function userDiamond(address _useradd) onlyOperator {
        uint256 _userDiamond =  10**18*mirailaEnergyBase.balanceOf(_useradd)*mirailaCoreBase.getUser()/mirailaEnergyBase.getEnergy();
-       mirailaDiamondBase.setdiamond(_address, mirailaDiamondBase.diamondOf(_address) + _userDiamond);
+       mirailaDiamondBase.setdiamond(_useradd, mirailaDiamondBase.diamondOf(_useradd) + _userDiamond);
     //   return userDiamond; 
     }
 

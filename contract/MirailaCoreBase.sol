@@ -35,7 +35,7 @@ contract MirailaCoreBase is MirailaDataAccess {
     }
     
     // add user
-    function addUser() public returns (uint256) {
+    function addUser() platform returns (uint256) {
        _alluser += 1;
     }
     

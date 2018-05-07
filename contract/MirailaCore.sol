@@ -3,7 +3,7 @@ pragma solidity ^0.4.11;
 import './MirailaCoreBase.sol';
 
 
-contract MirailaCore {
+contract MirailaCore is MirailaDataAccess {
     
     // parameter init
     MirailaCoreBase mirailaCoreBase;
@@ -14,7 +14,7 @@ contract MirailaCore {
     }
     
     // user add one, when first login 
-    function addUser() public {
+    function addUser() onlyOperator {
         mirailaCoreBase.addUser();
     }
     
