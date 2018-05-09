@@ -34,11 +34,11 @@ contract MirailaEnergyBase is MirailaCoreBase{
        return accessAllowed[_addr];
     }
     
-    function addEnergy(uint256 value) public returns (uint256) {
+    function addEnergy(uint256 value) platform returns (uint256) {
        _allenergy += value;
     }
     
-    function look1() public returns (uint256) {
+    function getEnergy() public returns (uint256) {
         return  _allenergy;
     }
   
