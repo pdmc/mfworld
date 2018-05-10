@@ -5,8 +5,6 @@ contract ControlContract {
 
     DataContract dataContract;
     
-    // mapping (address => uint256) public balanceOf;
-    
     function aaa(address _dataContractAddr) public {
         dataContract = DataContract(_dataContractAddr);
     }

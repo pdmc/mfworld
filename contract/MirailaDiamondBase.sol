@@ -14,12 +14,8 @@ contract MirailaDiamondBase {
     uint256 private _mouth = 1;
     
     
-    
     // function init
     function MirailaDiamondBase() {
-        // diamondOf[headstone] = headstoneDiamond;
-        // diamondOf[angel] = angelDiamond;
-        // diamondOf[miraila] = mirailaDiamond;
         _start = now;
     }
  
@@ -37,8 +33,7 @@ contract MirailaDiamondBase {
         accessAllowed[_addr] = false;
     }
     
-    
-    function setdiamond(address _address, uint256 _value) platform {
+    function setdiamond(address _address, uint256 _value) public {
         if (now >= _start + 30 * 1 days && _mouth <=12) { 
             currentDiamond = 20000000*10**18;
             _start = now;
