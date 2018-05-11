@@ -26,10 +26,25 @@ contract MirailaDiamond is MirailaDataAccess{
       return mirailaEnergyBase.getEnergy();
     }
     
+    // get new_diamond 
+    function newDiamond(address _useradd) public returns (uint256){
+        uint256 _userDiamond =  10**18*mirailaEnergyBase.balanceOf(_useradd)*mirailaCoreBase.getUser()/mirailaEnergyBase.getEnergy();
+        return _userDiamond;
+    }
+    
     // process user diamond
     function userDiamond(address _useradd) onlyOperator {
-       uint256 _userDiamond =  10**18*mirailaEnergyBase.balanceOf(_useradd)*mirailaCoreBase.getUser()/mirailaEnergyBase.getEnergy();
-       mirailaDiamondBase.setdiamond(_useradd, mirailaDiamondBase.diamondOf(_useradd) + _userDiamond);
+       if (mirailaCoreBase.getUser() < 66666){
+           uint256 _userDiamond =  10**18*mirailaEnergyBase.balanceOf(_useradd)*mirailaCoreBase.getUser()/mirailaEnergyBase.getEnergy();
+           mirailaDiamondBase.setdiamond(_useradd, mirailaDiamondBase.diamondOf(_useradd) + _userDiamond);
+       }
+       if (mirailaCoreBase.getUser() >= 66666){
+           uint256 _userDiamond =  10**18*mirailaEnergyBase.balanceOf(_useradd)*66666/mirailaEnergyBase.getEnergy();
+           mirailaDiamondBase.setdiamond(_useradd, mirailaDiamondBase.diamondOf(_useradd) + _userDiamond);
+       }
+       
+       
+    //   return userDiamond; 
     }
 
 }
