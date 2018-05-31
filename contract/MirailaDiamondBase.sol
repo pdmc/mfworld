@@ -2,12 +2,12 @@ pragma solidity ^0.4.11;
 
 import './MirailaEnergyBase.sol';
 
-contract MirailaDiamondBase_new {
+contract MirailaDiamondBase {
     
     mapping (address => uint256) public diamondOf; 
     mapping (address => bool) accessAllowed;
-    mapping (address => uint256) lastTimeOf;
-    mapping (address => uint256) lastDiamondOf;
+    mapping (address => uint256) public lastTimeOf;
+    mapping (address => uint256) public lastDiamondOf;
 
     uint256 private currentDiamond = 20000000*10**18;
     uint256 private _leaveDiamond;
@@ -20,6 +20,7 @@ contract MirailaDiamondBase_new {
         // diamondOf[headstone] = headstoneDiamond;
         // diamondOf[angel] = angelDiamond;
         // diamondOf[miraila] = mirailaDiamond;
+        accessAllowed[msg.sender] = true;
         _start = now;
     }
  
@@ -36,19 +37,7 @@ contract MirailaDiamondBase_new {
         accessAllowed[_addr] = false;
     }
     
-    
-    // function getAlldiamond() returns (uint256){
-    //     return allDiamond;
-    // }
-    
-    // function getLeavediamond() returns (uint256){
-    //     return leaveDiamond;
-    // }
-    
-    // function countLeavediamond(uint256 value) returns (uint256) {
-    //     return leaveDiamond -= value;
-    // }
-    
+
     function setdiamond(address _address, uint256 _value) platform public {
         if (now >= _start + 30 * 1 days && _mouth <=10) { 
             currentDiamond = 20000000*10**18;
@@ -76,15 +65,5 @@ contract MirailaDiamondBase_new {
     function setLastDiamond(address _address, uint256 v) platform public {
         lastDiamondOf[_address] = v;
     }
-
-
-    // function getLastTime(address _address) public returns (uint){
-    //     return lastStatus[_address][1];
-    // }
-
-    // function getLastStatus(address _address) public returns (uint[]){
-    //     return lastStatus[_address];
-    // }
-
 
 }
