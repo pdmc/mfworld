@@ -2,10 +2,12 @@ pragma solidity ^0.4.11;
 
 import './MirailaEnergyBase.sol';
 
-contract MirailaDiamondBase {
+contract MirailaDiamondBase_new {
     
     mapping (address => uint256) public diamondOf; 
     mapping (address => bool) accessAllowed;
+    mapping (address => uint256) lastTimeOf;
+    mapping (address => uint256) lastDiamondOf;
 
     uint256 private currentDiamond = 20000000*10**18;
     uint256 private _leaveDiamond;
@@ -13,12 +15,13 @@ contract MirailaDiamondBase {
     uint256 private _start;
     uint256 private _mouth = 1;
     
-    
     // function init
     function MirailaDiamondBase() {
+        // diamondOf[headstone] = headstoneDiamond;
+        // diamondOf[angel] = angelDiamond;
+        // diamondOf[miraila] = mirailaDiamond;
         _start = now;
     }
- 
  
     modifier platform() {
         require(accessAllowed[msg.sender] == true);
@@ -33,7 +36,20 @@ contract MirailaDiamondBase {
         accessAllowed[_addr] = false;
     }
     
-    function setdiamond(address _address, uint256 _value) public {
+    
+    // function getAlldiamond() returns (uint256){
+    //     return allDiamond;
+    // }
+    
+    // function getLeavediamond() returns (uint256){
+    //     return leaveDiamond;
+    // }
+    
+    // function countLeavediamond(uint256 value) returns (uint256) {
+    //     return leaveDiamond -= value;
+    // }
+    
+    function setdiamond(address _address, uint256 _value) platform public {
         if (now >= _start + 30 * 1 days && _mouth <=10) { 
             currentDiamond = 20000000*10**18;
             _start = now;
@@ -51,4 +67,24 @@ contract MirailaDiamondBase {
         currentDiamond -= _value;
         _leaveDiamond = currentDiamond;
     }
+
+    
+    function setLastTime(address _address, uint256 v) platform public {
+        lastTimeOf[_address] = v;
+    }
+
+    function setLastDiamond(address _address, uint256 v) platform public {
+        lastDiamondOf[_address] = v;
+    }
+
+
+    // function getLastTime(address _address) public returns (uint){
+    //     return lastStatus[_address][1];
+    // }
+
+    // function getLastStatus(address _address) public returns (uint[]){
+    //     return lastStatus[_address];
+    // }
+
+
 }
