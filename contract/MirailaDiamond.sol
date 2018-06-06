@@ -30,7 +30,7 @@ contract MirailaDiamond is MirailaDataAccess{
     
 
     // user first login
-    function firstLogin(address _useradd) onlyOperator {
+    function firstLogin(address _useradd)  {
        mirailaDiamondBase.setLastTime(_useradd, now);
     }
 
@@ -38,6 +38,7 @@ contract MirailaDiamond is MirailaDataAccess{
     function loadDiamond(address _useradd) onlyOperator returns (uint256){
         uint lastDiamond = mirailaDiamondBase.lastDiamondOf(_useradd);
         if (lastDiamond == 0){
+            mirailaDiamondBase.setLastTime(_useradd, now);
             uint256 _userDiamond = 10**18*mirailaEnergyBase.balanceOf(_useradd)*mirailaCoreBase.getUser()/mirailaEnergyBase.getEnergy();
             mirailaDiamondBase.setLastDiamond(_useradd, _userDiamond);
             _allDiamond = _userDiamond;
@@ -49,6 +50,9 @@ contract MirailaDiamond is MirailaDataAccess{
             _allDiamond = lastDiamond*24;
             mirailaDiamondBase.setLastDiamond(_useradd, _allDiamond); 
             return _allDiamond;
+        }
+        if (count == 0){
+            return 0;
         }
         _allDiamond = lastDiamond*count;
         mirailaDiamondBase.setLastDiamond(_useradd, _allDiamond);

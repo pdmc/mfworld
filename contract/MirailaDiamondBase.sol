@@ -15,6 +15,9 @@ contract MirailaDiamondBase {
     uint256 private _start;
     uint256 private _mouth = 1;
     
+    
+    event Transfer(address indexed _from, address indexed _to, uint256 _value);
+
     // function init
     function MirailaDiamondBase() {
         // diamondOf[headstone] = headstoneDiamond;
@@ -31,6 +34,10 @@ contract MirailaDiamondBase {
     
     function allowAccess(address _addr) platform public {
         accessAllowed[_addr] = true;
+    }
+    
+    function getlook(address _addr) returns (bool){
+        return accessAllowed[_addr];
     }
     
     function denyAccess(address _addr) platform public {
@@ -65,5 +72,19 @@ contract MirailaDiamondBase {
     function setLastDiamond(address _address, uint256 v) platform public {
         lastDiamondOf[_address] = v;
     }
+
+
+    function transfer(address _from, address _to, uint256 _amount) returns (bool success) {
+          if (diamondOf[_from] >= _amount 
+              && _amount > 0
+              && diamondOf[_to] + _amount > diamondOf[_to]) {
+              diamondOf[_from] -= _amount;
+              diamondOf[_to] += _amount;
+              Transfer(_from, _to, _amount);
+              return true;
+          } else {
+              return false;
+          }
+      }
 
 }
