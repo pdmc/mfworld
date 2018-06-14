@@ -10,7 +10,7 @@ contract MirailaDiamond is MirailaDataAccess{
     MirailaDiamondBase mirailaDiamondBase;
     MirailaCoreBase mirailaCoreBase;
     uint256 public _userDiamond;
-    uint256 public _allDiamond;
+    uint256 public _loadDiamond;
 
     function MirailaDiamond(address energy_add, address user_add, address diamond_add){
         mirailaEnergyBase = MirailaEnergyBase(energy_add);
@@ -18,58 +18,43 @@ contract MirailaDiamond is MirailaDataAccess{
         mirailaDiamondBase = MirailaDiamondBase(diamond_add);
     }
     
-    // get all user
-    // function lookUser() public returns (uint256) {
-    //   return mirailaCoreBase.getUser();
-    // }
-    
-    // // get all energy
-    // function lookEnergy() public returns (uint256) {
-    //   return mirailaEnergyBase.getEnergy();
-    // }
-    
-
-    // user first login
-    function firstLogin(address _useradd)  {
-       mirailaDiamondBase.setLastTime(_useradd, now);
-    }
-
     // load Diamond
     function loadDiamond(address _useradd) onlyOperator returns (uint256){
         uint lastDiamond = mirailaDiamondBase.lastDiamondOf(_useradd);
         if (lastDiamond == 0){
             mirailaDiamondBase.setLastTime(_useradd, now);
             uint256 _userDiamond = 10**18*mirailaEnergyBase.balanceOf(_useradd)*mirailaCoreBase.getUser()/mirailaEnergyBase.getEnergy();
-            mirailaDiamondBase.setLastDiamond(_useradd, _userDiamond);
-            _allDiamond = _userDiamond;
+            //mirailaDiamondBase.setLastDiamond(_useradd, _userDiamond);
+            _loadDiamond = _userDiamond;
             return _userDiamond;
         }
         uint lastTime = mirailaDiamondBase.lastTimeOf(_useradd);
-        uint count = (now - lastTime)/ 7200;
+        uint count = (now - lastTime)/ 720;
         if (count > 24){
-            _allDiamond = lastDiamond*24;
-            mirailaDiamondBase.setLastDiamond(_useradd, _allDiamond); 
-            return _allDiamond;
+            _loadDiamond = lastDiamond*24;
+            //mirailaDiamondBase.setLastDiamond(_useradd, _loadDiamond); 
+            return _loadDiamond;
         }
         if (count == 0){
+            _loadDiamond = 0;
             return 0;
         }
-        _allDiamond = lastDiamond*count;
-        mirailaDiamondBase.setLastDiamond(_useradd, _allDiamond);
-        return _allDiamond;
+        _loadDiamond = lastDiamond*count;
+        //mirailaDiamondBase.setLastDiamond(_useradd, _loadDiamond);
+        return _loadDiamond;
     }
     
     // process user diamond
-    function inDiamond(address _useradd) onlyOperator {
+    function inDiamond(address _useradd, uint256 _value) onlyOperator {
        if (mirailaCoreBase.getUser() < 66666){
             _userDiamond =  10**18*mirailaEnergyBase.balanceOf(_useradd)*mirailaCoreBase.getUser()/mirailaEnergyBase.getEnergy();
-           mirailaDiamondBase.setdiamond(_useradd, mirailaDiamondBase.diamondOf(_useradd) + _userDiamond);
+           mirailaDiamondBase.setdiamond(_useradd, mirailaDiamondBase.diamondOf(_useradd) + _value);
            mirailaDiamondBase.setLastTime(_useradd, now);
            mirailaDiamondBase.setLastDiamond(_useradd, _userDiamond);
        }
        else {
            _userDiamond =  10**18*mirailaEnergyBase.balanceOf(_useradd)*66666/mirailaEnergyBase.getEnergy();
-           mirailaDiamondBase.setdiamond(_useradd, mirailaDiamondBase.diamondOf(_useradd) + _userDiamond);
+           mirailaDiamondBase.setdiamond(_useradd, mirailaDiamondBase.diamondOf(_useradd) + _value);
            mirailaDiamondBase.setLastTime(_useradd, now);
            mirailaDiamondBase.setLastDiamond(_useradd, _userDiamond);
        }
@@ -79,13 +64,13 @@ contract MirailaDiamond is MirailaDataAccess{
     function iinDiamond(address _useradd) onlyOperator {
        if (mirailaCoreBase.getUser() < 66666){
             _userDiamond =  10**18*mirailaEnergyBase.balanceOf(_useradd)*mirailaCoreBase.getUser()/mirailaEnergyBase.getEnergy();
-           mirailaDiamondBase.setdiamond(_useradd, mirailaDiamondBase.diamondOf(_useradd) + _allDiamond);
+           mirailaDiamondBase.setdiamond(_useradd, mirailaDiamondBase.diamondOf(_useradd) + _loadDiamond);
            mirailaDiamondBase.setLastTime(_useradd, now);
            mirailaDiamondBase.setLastDiamond(_useradd, _userDiamond);
        }
        else {
            _userDiamond =  10**18*mirailaEnergyBase.balanceOf(_useradd)*66666/mirailaEnergyBase.getEnergy();
-           mirailaDiamondBase.setdiamond(_useradd, mirailaDiamondBase.diamondOf(_useradd) + _allDiamond);
+           mirailaDiamondBase.setdiamond(_useradd, mirailaDiamondBase.diamondOf(_useradd) + _loadDiamond);
            mirailaDiamondBase.setLastTime(_useradd, now);
            mirailaDiamondBase.setLastDiamond(_useradd, _userDiamond);
        }
