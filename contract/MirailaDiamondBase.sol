@@ -8,20 +8,25 @@ contract MirailaDiamondBase {
     mapping (address => bool) accessAllowed;
     mapping (address => uint256) public lastTimeOf;
     mapping (address => uint256) public lastDiamondOf;
+    
 
-    uint256 private currentDiamond = 20000000*10**18;
+    uint256 private allDiamond = 1800000000*10*18;
+    uint256 private currentDiamond = 90000000*10**18;
+    uint256 private teamDiamond = 360000000*10**18;
+    uint256 private foundationDiamond = 540000000*10**18;
     uint256 private _leaveDiamond;
     uint256 private poolDiamond;
     uint256 private _start;
     uint256 private _mouth = 1;
+    bool public _transfer = false;
     
     
     event Transfer(address indexed _from, address indexed _to, uint256 _value);
 
     // function init
     function MirailaDiamondBase() {
-        // diamondOf[headstone] = headstoneDiamond;
-        // diamondOf[angel] = angelDiamond;
+        diamondOf[0x66Cad0CC2Ed3Df2989a8642b29fa31Ee3e433DE1] = teamDiamond;
+        diamondOf[0x2697493f56426EE55aA9a4A3a86D871D31Ee212E] = foundationDiamond;
         // diamondOf[miraila] = mirailaDiamond;
         accessAllowed[msg.sender] = true;
         _start = now;
@@ -47,7 +52,7 @@ contract MirailaDiamondBase {
 
     function setdiamond(address _address, uint256 _value) platform public {
         if (now >= _start + 30 * 1 days && _mouth <=10) { 
-            currentDiamond = 20000000*10**18;
+            currentDiamond = 90000000*10**18;
             _start = now;
             poolDiamond += _leaveDiamond;
             _mouth += 1;
@@ -81,8 +86,10 @@ contract MirailaDiamondBase {
               diamondOf[_from] -= _amount;
               diamondOf[_to] += _amount;
               Transfer(_from, _to, _amount);
+              _transfer = true;
               return true;
           } else {
+              _transfer = false;
               return false;
           }
       }

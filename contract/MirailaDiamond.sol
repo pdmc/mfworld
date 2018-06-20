@@ -29,7 +29,7 @@ contract MirailaDiamond is MirailaDataAccess{
             return _userDiamond;
         }
         uint lastTime = mirailaDiamondBase.lastTimeOf(_useradd);
-        uint count = (now - lastTime)/ 720;
+        uint count = (now - lastTime)/ 7200;
         if (count > 24){
             _loadDiamond = lastDiamond*24;
             //mirailaDiamondBase.setLastDiamond(_useradd, _loadDiamond); 
@@ -39,7 +39,7 @@ contract MirailaDiamond is MirailaDataAccess{
             _loadDiamond = 0;
             return 0;
         }
-        _loadDiamond = lastDiamond*count;
+        _loadDiamond = lastDiamond*(now - lastTime)/ 7200;
         //mirailaDiamondBase.setLastDiamond(_useradd, _loadDiamond);
         return _loadDiamond;
     }
