@@ -24,12 +24,12 @@ contract MirailaDiamond is MirailaDataAccess{
         if (lastDiamond == 0){
             mirailaDiamondBase.setLastTime(_useradd, now);
             uint256 _userDiamond = 10**18*mirailaEnergyBase.balanceOf(_useradd)*mirailaCoreBase.getUser()/mirailaEnergyBase.getEnergy();
-            //mirailaDiamondBase.setLastDiamond(_useradd, _userDiamond);
-            _loadDiamond = _userDiamond;
-            return _userDiamond;
+            mirailaDiamondBase.setLastDiamond(_useradd, _userDiamond);
+            _loadDiamond = 0;
+            return 0;
         }
         uint lastTime = mirailaDiamondBase.lastTimeOf(_useradd);
-        uint count = (now - lastTime)/ 7200;
+        uint count = (now - lastTime)/ 120;
         if (count > 24){
             _loadDiamond = lastDiamond*24;
             //mirailaDiamondBase.setLastDiamond(_useradd, _loadDiamond); 
@@ -39,7 +39,7 @@ contract MirailaDiamond is MirailaDataAccess{
             _loadDiamond = 0;
             return 0;
         }
-        _loadDiamond = lastDiamond*(now - lastTime)/ 7200;
+        _loadDiamond = lastDiamond*(now - lastTime)/ 120;
         //mirailaDiamondBase.setLastDiamond(_useradd, _loadDiamond);
         return _loadDiamond;
     }
