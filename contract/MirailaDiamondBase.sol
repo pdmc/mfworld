@@ -58,7 +58,7 @@ contract MirailaDiamondBase {
             _mouth += 1;
         }
         if (now >= _start + 30 * 1 days && _mouth > 10){
-            currentDiamond = 2400000*10**18;
+            currentDiamond = 9000000*10**18;
             _start = now;
             poolDiamond += _leaveDiamond;
             _mouth += 1;
