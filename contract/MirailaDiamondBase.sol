@@ -6,10 +6,6 @@ contract MirailaDiamondBase {
     
     mapping (address => uint256) public diamondOf; 
     mapping (address => bool) accessAllowed;
-<<<<<<< HEAD
-
-    uint256 private currentDiamond = 20000000*10**18;
-=======
     mapping (address => uint256) public lastTimeOf;
     mapping (address => uint256) public lastDiamondOf;
     
@@ -18,7 +14,6 @@ contract MirailaDiamondBase {
     uint256 private currentDiamond = 90000000*10**18;
     uint256 private teamDiamond = 360000000*10**18;
     uint256 private foundationDiamond = 540000000*10**18;
->>>>>>> c9677f376788d6b9b90cbd00f4496b5de27eca61
     uint256 private _leaveDiamond;
     uint256 private poolDiamond;
     uint256 private _start;
@@ -54,25 +49,15 @@ contract MirailaDiamondBase {
         accessAllowed[_addr] = false;
     }
     
-<<<<<<< HEAD
-    function setdiamond(address _address, uint256 _value) platform {
-        if (now >= _start + 30 * 1 days && _mouth <=12) { 
-            currentDiamond = 20000000*10**18;
-=======
 
     function setdiamond(address _address, uint256 _value) platform public {
         if (now >= _start + 30 * 1 days && _mouth <=10) { 
             currentDiamond = 90000000*10**18;
->>>>>>> c9677f376788d6b9b90cbd00f4496b5de27eca61
             _start = now;
             poolDiamond += _leaveDiamond;
             _mouth += 1;
         }
-<<<<<<< HEAD
-        if (now >= _start + 30 * 1 days && _mouth > 12){
-=======
         if (now >= _start + 30 * 1 days && _mouth > 10){
->>>>>>> c9677f376788d6b9b90cbd00f4496b5de27eca61
             currentDiamond = 2400000*10**18;
             _start = now;
             poolDiamond += _leaveDiamond;
@@ -85,8 +70,6 @@ contract MirailaDiamondBase {
     }
 
     
-<<<<<<< HEAD
-=======
     function setLastTime(address _address, uint256 v) platform public {
         lastTimeOf[_address] = v;
     }
@@ -110,6 +93,5 @@ contract MirailaDiamondBase {
               return false;
           }
       }
->>>>>>> c9677f376788d6b9b90cbd00f4496b5de27eca61
 
 }
