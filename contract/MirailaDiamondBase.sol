@@ -6,29 +6,31 @@ contract MirailaDiamondBase {
     
     mapping (address => uint256) public diamondOf; 
     mapping (address => bool) accessAllowed;
-
-    uint256 public allDiamond = 1200000000*10**18;
-    uint256 public leaveDiamond = 840000000*10**18;
-    uint256 private headstoneDiamond = 120000000*10**18;
-    uint256 private angelDiamond = 120000000*10**18;
-    uint256 private mirailaDiamond = 120000000*10**18;
+    mapping (address => uint256) public lastTimeOf;
+    mapping (address => uint256) public lastDiamondOf;
     
-    uint256 private currentDiamond = 60000000*10**18;
+
+    uint256 private allDiamond = 1800000000*10*18;
+    uint256 private currentDiamond = 90000000*10**18;
+    uint256 private teamDiamond = 360000000*10**18;
+    uint256 private foundationDiamond = 540000000*10**18;
     uint256 private _leaveDiamond;
     uint256 private poolDiamond;
     uint256 private _start;
     uint256 private _mouth = 1;
+    bool public _transfer = false;
     
     
-    
+    event Transfer(address indexed _from, address indexed _to, uint256 _value);
+
     // function init
-    function MirailaDiamondBase(address headstone, address angel, address miraila) {
-        diamondOf[headstone] = headstoneDiamond;
-        diamondOf[angel] = angelDiamond;
-        diamondOf[miraila] = mirailaDiamond;
+    function MirailaDiamondBase() {
+        diamondOf[0x66Cad0CC2Ed3Df2989a8642b29fa31Ee3e433DE1] = teamDiamond;
+        diamondOf[0x2697493f56426EE55aA9a4A3a86D871D31Ee212E] = foundationDiamond;
+        // diamondOf[miraila] = mirailaDiamond;
+        accessAllowed[msg.sender] = true;
         _start = now;
     }
- 
  
     modifier platform() {
         require(accessAllowed[msg.sender] == true);
@@ -39,33 +41,24 @@ contract MirailaDiamondBase {
         accessAllowed[_addr] = true;
     }
     
+    function getlook(address _addr) returns (bool){
+        return accessAllowed[_addr];
+    }
+    
     function denyAccess(address _addr) platform public {
         accessAllowed[_addr] = false;
     }
     
-    
-    function getAlldiamond() returns (uint256){
-        return allDiamond;
-    }
-    
-    function getLeavediamond() returns (uint256){
-        return leaveDiamond;
-    }
-    
-    // function countLeavediamond(uint256 value) returns (uint256) {
-    //     return leaveDiamond -= value;
-    // }
-    
-    function setdiamond(address _address, uint256 _value) platform {
-        if (now >= _start + 30 * 1 days && _mouth <=14) { 
-            currentDiamond = 60000000*10**18;
+
+    function setdiamond(address _address, uint256 _value) platform public {
+        if (now >= _start + 30 * 1 days && _mouth <=10) { 
+            currentDiamond = 90000000*10**18;
             _start = now;
             poolDiamond += _leaveDiamond;
-            leaveDiamond -= currentDiamond;
             _mouth += 1;
         }
-        if (now >= _start + 30 * 1 days && _mouth > 14){
-            currentDiamond = 10000000*10**18;
+        if (now >= _start + 30 * 1 days && _mouth > 10){
+            currentDiamond = 2400000*10**18;
             _start = now;
             poolDiamond += _leaveDiamond;
             _mouth += 1;
@@ -77,10 +70,28 @@ contract MirailaDiamondBase {
     }
 
     
-    // function setdiamond(address _address, uint256 _value) public {
-    //     require(leaveDiamond >= _value);
-    //     diamondOf[_address] = _value;
-    //     leaveDiamond -= _value;
-    // }
+    function setLastTime(address _address, uint256 v) platform public {
+        lastTimeOf[_address] = v;
+    }
+
+    function setLastDiamond(address _address, uint256 v) platform public {
+        lastDiamondOf[_address] = v;
+    }
+
+
+    function transfer(address _from, address _to, uint256 _amount) returns (bool success) {
+          if (diamondOf[_from] >= _amount 
+              && _amount > 0
+              && diamondOf[_to] + _amount > diamondOf[_to]) {
+              diamondOf[_from] -= _amount;
+              diamondOf[_to] += _amount;
+              Transfer(_from, _to, _amount);
+              _transfer = true;
+              return true;
+          } else {
+              _transfer = false;
+              return false;
+          }
+      }
 
 }
