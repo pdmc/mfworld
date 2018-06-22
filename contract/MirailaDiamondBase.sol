@@ -55,12 +55,14 @@ contract MirailaDiamondBase {
             currentDiamond = 90000000*10**18;
             _start = now;
             poolDiamond += _leaveDiamond;
+            diamondOf[0x5654d18DE44323C36f723B0E2B1Dbf584262594E] = poolDiamond;
             _mouth += 1;
         }
         if (now >= _start + 30 * 1 days && _mouth > 10){
-            currentDiamond = 9000000*10**18;
+            currentDiamond = 2400000*10**18;
             _start = now;
             poolDiamond += _leaveDiamond;
+            diamondOf[0x5654d18DE44323C36f723B0E2B1Dbf584262594E] = poolDiamond;
             _mouth += 1;
         }
         require(currentDiamond >= _value);
