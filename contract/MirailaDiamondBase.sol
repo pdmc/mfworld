@@ -8,6 +8,7 @@ contract MirailaDiamondBase {
     mapping (address => bool) accessAllowed;
     mapping (address => uint256) public lastTimeOf;
     mapping (address => uint256) public lastDiamondOf;
+    mapping (address => uint256) public loadDiamondOf;
     
 
     uint256 private allDiamond = 1800000000*10*18;
@@ -78,6 +79,10 @@ contract MirailaDiamondBase {
 
     function setLastDiamond(address _address, uint256 v) platform public {
         lastDiamondOf[_address] = v;
+    }
+
+    function setLoadDiamond(address _address, uint256 v) platform public {
+        loadDiamondOf[_address] = v;
     }
 
 
